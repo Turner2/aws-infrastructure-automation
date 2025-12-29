@@ -157,6 +157,17 @@ INSTANCE_TYPE = "t2.micro"      # Instance type
 python deploy.py
 ```
 
+Or use the quick deploy script:
+
+```bash
+./quick-deploy.sh
+```
+
+**Note:** The script automatically:
+- Detects and uses available subnets in your VPC
+- Configures networking properly to avoid conflicts
+- Handles security groups correctly
+
 The script will:
 
 1. ✅ Create an EC2 key pair
@@ -371,13 +382,30 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### Common Issues
 
+**"InvalidParameterCombination: Network interfaces and an instance-level security groups may not be specified"**
+
+- This has been fixed in the latest version
+- The code now properly specifies security groups only in NetworkInterfaces
+- Pull the latest code if you encounter this
+
+**"No subnets found for the default VPC"**
+
+- The code automatically detects and uses available subnets
+- If your VPC has no subnets, create them in AWS Console:
+  - Go to VPC Dashboard → Subnets → Create Subnet
+  - Or the code will automatically find existing subnets in your VPC
+
 **"No default VPC found"**
 
-- Create a default VPC in your AWS console or specify a VPC ID in the code
+- Create a default VPC in your AWS console
+- Or specify a VPC ID in the security group configuration
 
 **"Insufficient permissions"**
 
-- Ensure your IAM user/role has EC2 and ELB permissions
+- Ensure your IAM user/role has these permissions:
+  - `ec2:*` (EC2 full access)
+  - `elasticloadbalancing:*` (ELB full access)
+- Or attach the `AmazonEC2FullAccess` and `ElasticLoadBalancingFullAccess` policies
 
 **Website not loading**
 

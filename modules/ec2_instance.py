@@ -102,7 +102,6 @@ class EC2InstanceManager:
                 "ImageId": ami_id,
                 "InstanceType": instance_type,
                 "KeyName": key_name,
-                "SecurityGroupIds": security_group_ids,
                 "UserData": user_data,
                 "MinCount": 1,
                 "MaxCount": 1,
@@ -117,9 +116,30 @@ class EC2InstanceManager:
                 }]
             }
             
-            # Add subnet if specified
+            # Add subnet if specified, otherwise get a subnet from VPC
             if subnet_id:
                 params["NetworkInterfaces"][0]["SubnetId"] = subnet_id
+            else:
+                # Try to get any available subnet from the VPC
+                try:
+                    # Get the VPC from security group
+                    sg_response = self.ec2_client.describe_security_groups(
+                        GroupIds=[security_group_ids[0]]
+                    )
+                    vpc_id = sg_response["SecurityGroups"][0]["VpcId"]
+                    
+                    # Get subnets in this VPC
+                    subnets_response = self.ec2_client.describe_subnets(
+                        Filters=[
+                            {"Name": "vpc-id", "Values": [vpc_id]}
+                        ]
+                    )
+                    if subnets_response["Subnets"]:
+                        default_subnet = subnets_response["Subnets"][0]["SubnetId"]
+                        params["NetworkInterfaces"][0]["SubnetId"] = default_subnet
+                        logger.info(f"Using subnet: {default_subnet}")
+                except Exception as e:
+                    logger.warning(f"Could not find subnet: {e}")
             
             # Launch instance
             response = self.ec2_client.run_instances(**params)
