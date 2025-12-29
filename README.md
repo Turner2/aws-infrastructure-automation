@@ -87,18 +87,21 @@ aws-infrastructure-automation/
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/yourusername/aws-infrastructure-automation.git
    cd aws-infrastructure-automation
    ```
 
 2. **Set up virtual environment**
+
    ```bash
    python3 -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
 3. **Install dependencies**
+
    ```bash
    pip install -r requirements.txt
    ```
@@ -127,11 +130,13 @@ INSTANCE_TYPE = "t2.micro"      # Instance type
 ### Deployment
 
 **Deploy the infrastructure:**
+
 ```bash
 python deploy.py
 ```
 
 The script will:
+
 1. ✅ Create an EC2 key pair
 2. ✅ Retrieve your public IP address
 3. ✅ Create security groups for EC2 and ALB
@@ -141,6 +146,7 @@ The script will:
 7. ✅ Display access URLs
 
 **Example Output:**
+
 ```
 ==========================================
 🌐 ACCESS YOUR WEBSITE:
@@ -157,11 +163,13 @@ The script will:
 ### Cleanup
 
 **Remove all resources:**
+
 ```bash
 python cleanup.py
 ```
 
 **Force cleanup (skip confirmation):**
+
 ```bash
 python cleanup.py --force
 ```
@@ -186,6 +194,7 @@ python cleanup.py --force
 ## 🧪 Testing
 
 The project includes error handling for:
+
 - ✅ Missing AWS credentials
 - ✅ Insufficient permissions
 - ✅ Resource conflicts
@@ -195,22 +204,26 @@ The project includes error handling for:
 ## 📊 Modules Overview
 
 ### KeyPairManager (`modules/keypair.py`)
+
 - Create and manage EC2 key pairs
 - Secure private key storage
 - Key pair existence checking
 
 ### SecurityGroupManager (`modules/security_group.py`)
+
 - Create security groups
 - Configure ingress rules dynamically
 - VPC integration
 
 ### EC2InstanceManager (`modules/ec2_instance.py`)
+
 - AMI selection and filtering
 - Instance provisioning with user data
 - Auto-assign public IP
 - Instance state management
 
 ### ALBManager (`modules/alb.py`)
+
 - Application Load Balancer creation
 - Target group configuration
 - Multi-AZ subnet selection
@@ -221,6 +234,7 @@ The project includes error handling for:
 ### Change Website Template
 
 Edit `config.py`:
+
 ```python
 TEMPLATE_NAME = "your-template-name"
 TEMPLATE_ID = "1234"  # From tooplate.com
@@ -277,12 +291,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ### Common Issues
 
 **"No default VPC found"**
+
 - Create a default VPC in your AWS console or specify a VPC ID in the code
 
 **"Insufficient permissions"**
+
 - Ensure your IAM user/role has EC2 and ELB permissions
 
 **Website not loading**
+
 - Wait 2-3 minutes for user data script to complete
 - Check security group rules
 - Verify instance status checks
@@ -292,6 +309,7 @@ See [SETUP_GUIDE.md](SETUP_GUIDE.md) for more troubleshooting help.
 ## 💰 Cost Estimation
 
 With t2.micro (Free Tier eligible):
+
 - Instance: ~$8.50/month (after free tier)
 - ALB: ~$16/month
 - **Total: ~$25/month** with minimal traffic
