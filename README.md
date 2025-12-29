@@ -401,10 +401,6 @@ With t2.micro (Free Tier eligible):
 - ALB: ~$16/month
 - **Total: ~$25/month** with minimal traffic
 
-## 📧 Contact
-
-Project Link: [https://github.com/yourusername/aws-infrastructure-automation](https://github.com/yourusername/aws-infrastructure-automation)
-
 ---
 
 **⭐ If you find this project helpful, please consider giving it a star!**
