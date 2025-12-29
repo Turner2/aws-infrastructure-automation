@@ -1,0 +1,305 @@
+# AWS Infrastructure Automation with Boto3
+
+![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
+![AWS](https://img.shields.io/badge/AWS-boto3-orange.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+
+A production-ready, modular Python automation framework for deploying complete AWS infrastructure using Boto3. This project demonstrates infrastructure-as-code principles with clean architecture, comprehensive error handling, and professional DevOps practices.
+
+## 🎯 Features
+
+- **🔑 Key Pair Management**: Automated EC2 key pair creation and secure storage
+- **🛡️ Security Groups**: Dynamic security group configuration with IP-based rules
+- **💻 EC2 Instances**: Automated instance provisioning with custom user data
+- **⚖️ Application Load Balancer**: Full ALB setup with target groups and listeners
+- **🌐 Web Server Deployment**: Automatic website deployment from tooplate.com templates
+- **🧹 Resource Cleanup**: Comprehensive cleanup script for safe resource removal
+- **📊 Modular Architecture**: Clean, maintainable code structure following best practices
+
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    Application Load Balancer            │
+│                  (Internet-facing, Multi-AZ)            │
+└──────────────────────┬──────────────────────────────────┘
+                       │
+                       ▼
+            ┌──────────────────────┐
+            │   Target Group       │
+            │   (Health Checks)    │
+            └──────────┬───────────┘
+                       │
+                       ▼
+            ┌──────────────────────┐
+            │   EC2 Instance       │
+            │   - t2.micro         │
+            │   - Amazon Linux 2023│
+            │   - Apache Webserver │
+            └──────────────────────┘
+```
+
+## 📁 Project Structure
+
+```
+aws-infrastructure-automation/
+├── deploy.py                 # Main deployment orchestration
+├── cleanup.py               # Resource cleanup script
+├── config.py                # Configuration and settings
+├── requirements.txt         # Python dependencies
+│
+├── modules/                # Core AWS service modules
+│   ├── __init__.py
+│   ├── keypair.py         # Key pair management
+│   ├── security_group.py  # Security group operations
+│   ├── ec2_instance.py    # EC2 instance management
+│   └── alb.py            # Application Load Balancer
+│
+├── utils/                 # Helper utilities
+│   ├── __init__.py
+│   └── helpers.py        # Common utility functions
+│
+├── .github/              # GitHub Actions CI/CD
+│   └── workflows/
+│       └── python-lint.yml
+│
+├── quick-deploy.sh       # Quick deployment script
+├── quick-cleanup.sh      # Quick cleanup script
+│
+└── docs/                # Documentation
+    ├── README.md
+    ├── DOCUMENTATION.md
+    ├── EXAMPLES.md
+    ├── ARCHITECTURE.md
+    ├── SETUP_GUIDE.md
+    └── CONTRIBUTING.md
+```
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Python 3.8 or higher
+- AWS Account with appropriate permissions
+- AWS CLI configured with credentials
+- Boto3 library
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/aws-infrastructure-automation.git
+   cd aws-infrastructure-automation
+   ```
+
+2. **Set up virtual environment**
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Configure AWS credentials**
+   ```bash
+   aws configure
+   ```
+
+### Configuration
+
+Edit `config.py` to customize your deployment:
+
+```python
+# Template Configuration
+TEMPLATE_NAME = "barista-cafe"  # Change to your preferred template name
+TEMPLATE_ID = "2137"            # Tooplate template ID
+
+# AWS Configuration
+AWS_REGION = "us-east-1"        # Your preferred AWS region
+
+# EC2 Configuration
+INSTANCE_TYPE = "t2.micro"      # Instance type
+```
+
+### Deployment
+
+**Deploy the infrastructure:**
+```bash
+python deploy.py
+```
+
+The script will:
+1. ✅ Create an EC2 key pair
+2. ✅ Retrieve your public IP address
+3. ✅ Create security groups for EC2 and ALB
+4. ✅ Launch an EC2 instance with a web server
+5. ✅ Set up an Application Load Balancer
+6. ✅ Configure target groups and listeners
+7. ✅ Display access URLs
+
+**Example Output:**
+```
+==========================================
+🌐 ACCESS YOUR WEBSITE:
+==========================================
+
+   🔗 ALB Endpoint: http://barista-cafe-alb-123456789.us-east-1.elb.amazonaws.com
+   🔗 Direct Access: http://54.123.45.67
+   📊 Instance Info: http://barista-cafe-alb-123456789.us-east-1.elb.amazonaws.com/instance-info.html
+
+⏰ Note: Allow 2-3 minutes for the website to be fully configured.
+==========================================
+```
+
+### Cleanup
+
+**Remove all resources:**
+```bash
+python cleanup.py
+```
+
+**Force cleanup (skip confirmation):**
+```bash
+python cleanup.py --force
+```
+
+## 📚 Documentation
+
+- **[SETUP_GUIDE.md](SETUP_GUIDE.md)** - Complete setup instructions
+- **[DOCUMENTATION.md](DOCUMENTATION.md)** - Technical documentation and API reference
+- **[EXAMPLES.md](EXAMPLES.md)** - Configuration examples and use cases
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - System architecture diagrams
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines
+- **[PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)** - Project overview and highlights
+
+## 🛡️ Security Features
+
+- **IP Whitelisting**: SSH access restricted to your public IP
+- **Key Pair Protection**: Private keys saved with restricted permissions (chmod 400)
+- **Security Groups**: Principle of least privilege
+- **Resource Tagging**: All resources tagged for tracking and cost management
+- **Automated Cleanup**: Prevents resource waste and unauthorized access
+
+## 🧪 Testing
+
+The project includes error handling for:
+- ✅ Missing AWS credentials
+- ✅ Insufficient permissions
+- ✅ Resource conflicts
+- ✅ Network issues
+- ✅ Service quotas
+
+## 📊 Modules Overview
+
+### KeyPairManager (`modules/keypair.py`)
+- Create and manage EC2 key pairs
+- Secure private key storage
+- Key pair existence checking
+
+### SecurityGroupManager (`modules/security_group.py`)
+- Create security groups
+- Configure ingress rules dynamically
+- VPC integration
+
+### EC2InstanceManager (`modules/ec2_instance.py`)
+- AMI selection and filtering
+- Instance provisioning with user data
+- Auto-assign public IP
+- Instance state management
+
+### ALBManager (`modules/alb.py`)
+- Application Load Balancer creation
+- Target group configuration
+- Multi-AZ subnet selection
+- Listener and health check setup
+
+## 🎨 Customization
+
+### Change Website Template
+
+Edit `config.py`:
+```python
+TEMPLATE_NAME = "your-template-name"
+TEMPLATE_ID = "1234"  # From tooplate.com
+```
+
+### Modify Instance Type
+
+```python
+INSTANCE_TYPE = "t2.small"  # Or any other EC2 instance type
+```
+
+### Change Region
+
+```python
+AWS_REGION = "eu-west-1"
+```
+
+## 📝 Best Practices Demonstrated
+
+1. **Modular Design**: Separation of concerns across modules
+2. **Configuration Management**: Centralized configuration
+3. **Error Handling**: Comprehensive exception handling
+4. **Logging**: Structured logging for debugging
+5. **Resource Cleanup**: Clean teardown procedures
+6. **Documentation**: Inline comments and docstrings
+7. **Type Hints**: Python type annotations for better code quality
+8. **DRY Principle**: Reusable utility functions
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
+
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Website templates from [Tooplate.com](https://www.tooplate.com/)
+- AWS Boto3 Documentation
+- Python community
+
+## 💡 Use Cases
+
+- **Learning AWS**: Perfect for understanding AWS services programmatically
+- **DevOps Practice**: Infrastructure automation patterns
+- **Quick Deployments**: Rapid prototype hosting
+- **Portfolio Project**: Demonstrate AWS and Python skills
+
+## 🔍 Troubleshooting
+
+### Common Issues
+
+**"No default VPC found"**
+- Create a default VPC in your AWS console or specify a VPC ID in the code
+
+**"Insufficient permissions"**
+- Ensure your IAM user/role has EC2 and ELB permissions
+
+**Website not loading**
+- Wait 2-3 minutes for user data script to complete
+- Check security group rules
+- Verify instance status checks
+
+See [SETUP_GUIDE.md](SETUP_GUIDE.md) for more troubleshooting help.
+
+## 💰 Cost Estimation
+
+With t2.micro (Free Tier eligible):
+- Instance: ~$8.50/month (after free tier)
+- ALB: ~$16/month
+- **Total: ~$25/month** with minimal traffic
+
+## 📧 Contact
+
+Project Link: [https://github.com/yourusername/aws-infrastructure-automation](https://github.com/yourusername/aws-infrastructure-automation)
+
+---
+
+**⭐ If you find this project helpful, please consider giving it a star!**
