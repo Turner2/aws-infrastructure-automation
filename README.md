@@ -413,6 +413,26 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Check security group rules
 - Verify instance status checks
 
+**Website shows "It works!" instead of the template**
+
+- This means the template didn't download/extract correctly
+- SSH into your instance and check the logs:
+  ```bash
+  ssh -i barista-cafe-keypair.pem ec2-user@<instance-ip>
+  sudo cat /var/log/user-data.log
+  ```
+- Common fixes:
+  - Verify the template file exists: `ls /tmp/2137_barista_cafe.zip`
+  - Check if files were copied: `ls /var/www/html/`
+  - Manually download and extract:
+    ```bash
+    cd /tmp
+    wget https://www.tooplate.com/zip-templates/2137_barista_cafe.zip
+    unzip -o 2137_barista_cafe.zip
+    sudo cp -r 2137_barista_cafe/* /var/www/html/
+    sudo systemctl restart httpd
+    ```
+
 **Tests failing**
 
 - Ensure all dependencies are installed: `pip install -r requirements.txt`

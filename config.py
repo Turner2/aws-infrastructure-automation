@@ -9,6 +9,7 @@ from typing import Dict, Any
 # Template Configuration
 TEMPLATE_NAME = "barista-cafe"  # Change this to use different tooplate templates
 TEMPLATE_ID = "2137"  # Tooplate template ID for Barista Cafe
+TEMPLATE_FILE = "2137_barista_cafe"  # Full template filename without .zip
 
 # AWS Configuration
 AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
@@ -31,23 +32,39 @@ def get_resource_names() -> Dict[str, str]:
 
 # User Data Script Template
 USER_DATA_SCRIPT = """#!/bin/bash
+# Log all output to a file for debugging
+exec > >(tee /var/log/user-data.log)
+exec 2>&1
+
+echo "Starting user data script..."
+date
+
 # Update system
+echo "Updating system packages..."
 yum update -y
 
 # Install Apache web server
+echo "Installing Apache, wget, and unzip..."
 yum install -y httpd wget unzip
 
 # Start and enable Apache
+echo "Starting Apache..."
 systemctl start httpd
 systemctl enable httpd
 
 # Download and setup template from tooplate.com
+echo "Downloading template from tooplate.com..."
 cd /tmp
-wget https://www.tooplate.com/zip-templates/{template_id}.zip
-unzip -o {template_id}.zip
-cp -r {template_id}/* /var/www/html/
+wget https://www.tooplate.com/zip-templates/{template_file}.zip
+
+echo "Extracting template..."
+unzip -o {template_file}.zip
+
+echo "Copying template files to /var/www/html/..."
+cp -r {template_file}/* /var/www/html/
 
 # Set proper permissions
+echo "Setting permissions..."
 chown -R apache:apache /var/www/html
 chmod -R 755 /var/www/html
 
@@ -88,15 +105,18 @@ cat > /var/www/html/instance-info.html << 'EOF'
 EOF
 
 # Restart Apache
+echo "Restarting Apache..."
 systemctl restart httpd
 
 echo "Setup complete! Website is ready."
+echo "User data script finished at $(date)"
 """
 
 def get_user_data() -> str:
     """Get the formatted user data script."""
     return USER_DATA_SCRIPT.format(
         template_id=TEMPLATE_ID,
+        template_file=TEMPLATE_FILE,
         template_name=TEMPLATE_NAME
     )
 
