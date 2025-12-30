@@ -1,7 +1,7 @@
 #!/bin/bash
 # Quick deployment script
 
-echo "🚀 Starting AWS Infrastructure Deployment..."
+echo "Starting AWS Infrastructure Deployment..."
 echo ""
 
 # Check if virtual environment exists
@@ -24,4 +24,4 @@ echo "Starting deployment..."
 python deploy.py
 
 echo ""
-echo "✅ Deployment script completed!"
+echo "Deployment script completed!"

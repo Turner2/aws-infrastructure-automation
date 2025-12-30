@@ -83,7 +83,7 @@ cat > /var/www/html/instance-info.html << 'EOF'
 </head>
 <body>
     <div class="info-box">
-        <h1>🚀 AWS Deployment Info</h1>
+        <h1>AWS Deployment Info</h1>
         <div class="metadata">
             <strong>Instance ID:</strong> <span id="instance-id">Loading...</span><br>
             <strong>Availability Zone:</strong> <span id="az">Loading...</span><br>

@@ -79,7 +79,7 @@ class InfrastructureDeployer:
     def deploy(self):
         """Execute the full deployment."""
         try:
-            print_section("🚀 AWS Infrastructure Deployment")
+            print_section("AWS Infrastructure Deployment")
             print(f"Region: {self.region}")
             print(f"Template: {TEMPLATE_NAME}")
             print()
@@ -102,7 +102,7 @@ class InfrastructureDeployer:
             # Step 6: Print Summary
             self._print_deployment_summary()
             
-            print_success("\n✅ Deployment completed successfully!")
+            print_success("\nDeployment completed successfully!")
             
         except Exception as e:
             print_error(f"Deployment failed: {e}")
@@ -111,7 +111,7 @@ class InfrastructureDeployer:
     
     def _create_key_pair(self):
         """Create EC2 key pair."""
-        print_section("1️⃣  Creating Key Pair")
+        print_section("1. Creating Key Pair")
         
         key_name = self.resource_names["key_pair"]
         key_file = f"{key_name}.pem"
@@ -125,12 +125,12 @@ class InfrastructureDeployer:
         print_resource_info("Key Pair", key_name, result["KeyPairId"])
         
         if not result.get("Exists"):
-            print(f"  💾 Private key saved to: {key_file}")
-            print(f"  ⚠️  Keep this file safe! It cannot be recovered.")
+            print(f"  Private key saved to: {key_file}")
+            print(f"  Keep this file safe! It cannot be recovered.")
     
     def _get_my_ip(self):
         """Get public IP address."""
-        print_section("2️⃣  Getting Public IP Address")
+        print_section("2. Getting Public IP Address")
         
         my_ip = get_my_public_ip()
         if not my_ip:
@@ -143,10 +143,10 @@ class InfrastructureDeployer:
     
     def _create_security_groups(self):
         """Create security groups for EC2 and ALB."""
-        print_section("3️⃣  Creating Security Groups")
+        print_section("3. Creating Security Groups")
         
         # Create instance security group
-        print("\n📦 Creating EC2 Security Group...")
+        print("\nCreating EC2 Security Group...")
         instance_sg = self.sg_manager.create_security_group(
             group_name=self.resource_names["security_group"],
             description=f"Security group for {TEMPLATE_NAME} EC2 instance",
@@ -164,7 +164,7 @@ class InfrastructureDeployer:
         print_resource_info("Instance SG", instance_sg["GroupName"], instance_sg["GroupId"])
         
         # Create ALB security group
-        print("\n📦 Creating ALB Security Group...")
+        print("\nCreating ALB Security Group...")
         alb_sg = self.sg_manager.create_security_group(
             group_name=self.resource_names["alb_sg"],
             description=f"Security group for {TEMPLATE_NAME} ALB",
@@ -182,15 +182,15 @@ class InfrastructureDeployer:
     
     def _create_ec2_instance(self):
         """Create EC2 instance."""
-        print_section("4️⃣  Launching EC2 Instance")
+        print_section("4. Launching EC2 Instance")
         
         # Get AMI ID
-        print("🔍 Finding latest Amazon Linux 2023 AMI...")
+        print("Finding latest Amazon Linux 2023 AMI...")
         ami_id = self.instance_manager.get_ami_id(AMI_NAME_FILTER)
         print(f"✓ Using AMI: {ami_id}")
         
         # Create instance
-        print(f"\n🚀 Launching {INSTANCE_TYPE} instance...")
+        print(f"\nLaunching {INSTANCE_TYPE} instance...")
         instance_info = self.instance_manager.create_instance(
             ami_id=ami_id,
             instance_type=INSTANCE_TYPE,
@@ -207,22 +207,22 @@ class InfrastructureDeployer:
         print(f"  Private IP: {instance_info['PrivateIpAddress']}")
         print(f"  Availability Zone: {instance_info['AvailabilityZone']}")
         
-        print("\n⏳ Website is being set up (this takes ~2-3 minutes)...")
+        print("\nWebsite is being set up (this takes ~2-3 minutes)...")
     
     def _create_alb_infrastructure(self):
         """Create Application Load Balancer and related resources."""
-        print_section("5️⃣  Creating Application Load Balancer")
+        print_section("5. Creating Application Load Balancer")
         
         # Get VPC ID from instance
         vpc_id = self.resources["instance"]["VpcId"]
         
         # Get all subnets
-        print("🔍 Finding subnets across all availability zones...")
+        print("Finding subnets across all availability zones...")
         subnets = self.alb_manager.get_all_subnets(vpc_id)
         print(f"✓ Found {len(subnets)} subnets")
         
         # Create target group
-        print("\n📋 Creating Target Group...")
+        print("\nCreating Target Group...")
         target_group = self.alb_manager.create_target_group(
             name=self.resource_names["target_group"],
             vpc_id=vpc_id,
@@ -233,7 +233,7 @@ class InfrastructureDeployer:
         print_resource_info("Target Group", target_group["TargetGroupName"], target_group["TargetGroupArn"].split('/')[-1])
         
         # Register instance to target group
-        print("\n🎯 Registering instance to target group...")
+        print("\nRegistering instance to target group...")
         self.alb_manager.register_targets(
             target_group_arn=target_group["TargetGroupArn"],
             instance_ids=[self.resources["instance"]["InstanceId"]]
@@ -241,7 +241,7 @@ class InfrastructureDeployer:
         print("✓ Instance registered")
         
         # Create load balancer
-        print("\n⚖️  Creating Application Load Balancer...")
+        print("\nCreating Application Load Balancer...")
         load_balancer = self.alb_manager.create_load_balancer(
             name=self.resource_names["alb"],
             security_groups=[self.resources["alb_sg"]["GroupId"]],
@@ -253,7 +253,7 @@ class InfrastructureDeployer:
         print_resource_info("Load Balancer", load_balancer["LoadBalancerName"], load_balancer["LoadBalancerArn"].split('/')[-1])
         
         # Create listener
-        print("\n👂 Creating Listener...")
+        print("\nCreating Listener...")
         listener = self.alb_manager.create_listener(
             load_balancer_arn=load_balancer["LoadBalancerArn"],
             target_group_arn=target_group["TargetGroupArn"]
@@ -264,32 +264,32 @@ class InfrastructureDeployer:
     
     def _print_deployment_summary(self):
         """Print deployment summary."""
-        print_section("📊 Deployment Summary")
+        print_section("Deployment Summary")
         
-        print("\n🔑 Key Pair:")
+        print("\nKey Pair:")
         print(f"   Name: {self.resource_names['key_pair']}")
         print(f"   File: {self.resource_names['key_pair']}.pem")
         
-        print("\n🛡️  Security Groups:")
+        print("\nSecurity Groups:")
         print(f"   Instance SG: {self.resources['instance_sg']['GroupId']}")
         print(f"   ALB SG: {self.resources['alb_sg']['GroupId']}")
         
-        print("\n💻 EC2 Instance:")
+        print("\nEC2 Instance:")
         print(f"   ID: {self.resources['instance']['InstanceId']}")
         print(f"   Type: {INSTANCE_TYPE}")
         print(f"   Public IP: {self.resources['instance']['PublicIpAddress']}")
         
-        print("\n⚖️  Load Balancer:")
+        print("\nLoad Balancer:")
         print(f"   Name: {self.resources['load_balancer']['LoadBalancerName']}")
         print(f"   DNS: {self.resources['load_balancer']['DNSName']}")
         
         print("\n" + "="*60)
-        print("🌐 ACCESS YOUR WEBSITE:")
+        print("ACCESS YOUR WEBSITE:")
         print("="*60)
-        print(f"\n   🔗 ALB Endpoint: http://{self.resources['load_balancer']['DNSName']}")
-        print(f"   🔗 Direct Access: http://{self.resources['instance']['PublicIpAddress']}")
-        print(f"   📊 Instance Info: http://{self.resources['load_balancer']['DNSName']}/instance-info.html")
-        print("\n⏰ Note: Allow 2-3 minutes for the website to be fully configured.")
+        print(f"\n   ALB Endpoint: http://{self.resources['load_balancer']['DNSName']}")
+        print(f"   Direct Access: http://{self.resources['instance']['PublicIpAddress']}")
+        print(f"   Instance Info: http://{self.resources['load_balancer']['DNSName']}/instance-info.html")
+        print("\nNote: Allow 2-3 minutes for the website to be fully configured.")
         print("="*60)
 
 
@@ -299,7 +299,7 @@ def main():
         deployer = InfrastructureDeployer()
         deployer.deploy()
     except KeyboardInterrupt:
-        print("\n\n⚠️  Deployment interrupted by user")
+        print("\n\nDeployment interrupted by user")
         sys.exit(1)
     except Exception as e:
         print_error(f"Fatal error: {e}")

@@ -164,6 +164,7 @@ Or use the quick deploy script:
 ```
 
 **Note:** The script automatically:
+
 - Detects and uses available subnets in your VPC
 - Configures networking properly to avoid conflicts
 - Handles security groups correctly
@@ -245,13 +246,13 @@ pytest test_*.py -v --cov=. --cov-report=html
 
 ### Test Coverage
 
-| Component | Tests | Coverage | Status |
-|-----------|-------|----------|--------|
-| Configuration | 10 | 100% | ✅ |
-| AWS Modules | 17 | 41-65% | ✅ |
-| Utilities | 10 | 97% | ✅ |
-| Integration | 10 | - | ✅ |
-| **Total** | **45** | **56%** | ✅ |
+| Component     | Tests  | Coverage | Status |
+| ------------- | ------ | -------- | ------ |
+| Configuration | 10     | 100%     | ✅     |
+| AWS Modules   | 17     | 41-65%   | ✅     |
+| Utilities     | 10     | 97%      | ✅     |
+| Integration   | 10     | -        | ✅     |
+| **Total**     | **45** | **56%**  | ✅     |
 
 ### What's Tested
 
@@ -271,6 +272,7 @@ pytest test_*.py -v --cov=. --cov-report=html
 ### Continuous Integration
 
 Tests automatically run on:
+
 - Every push to main/develop branches
 - Every pull request
 - Multiple Python versions (3.8-3.12)

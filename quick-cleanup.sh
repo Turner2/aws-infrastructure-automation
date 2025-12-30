@@ -1,7 +1,7 @@
 #!/bin/bash
 # Quick cleanup script
 
-echo "🧹 Starting AWS Infrastructure Cleanup..."
+echo "Starting AWS Infrastructure Cleanup..."
 echo ""
 
 # Activate virtual environment if it exists
@@ -13,4 +13,4 @@ fi
 python cleanup.py
 
 echo ""
-echo "✅ Cleanup script completed!"
+echo "Cleanup script completed!"
