@@ -2,30 +2,25 @@
 
 ![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
 ![AWS](https://img.shields.io/badge/AWS-boto3-orange.svg)
-![License](https://img.shields.io/bpython cleanup.py --force
-```
-
-## Security Features/license-MIT-green- Service quotas
-
-## Modules Overviewg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Tests](https://img.shields.io/badge/tests-45%20passed-success.svg)
 ![Coverage](https://img.shields.io/badge/coverage-56%25-yellow.svg)
 
 A production-ready, modular Python automation framework for deploying complete AWS infrastructure using Boto3. This project demonstrates infrastructure-as-code principles with clean architecture, comprehensive error handling, professional DevOps practices, and a complete test suite.
 
-## Features
+## 🎯 Features
 
-- **Key Pair Management**: Automated EC2 key pair creation and secure storage
-- **Security Groups**: Dynamic security group configuration with IP-based rules
-- **EC2 Instances**: Automated instance provisioning with custom user data
-- **Application Load Balancer**: Full ALB setup with target groups and listeners
-- **Web Server Deployment**: Automatic website deployment from tooplate.com templates
-- **Resource Cleanup**: Comprehensive cleanup script for safe resource removal
-- **Modular Architecture**: Clean, maintainable code structure following best practices
-- **Comprehensive Testing**: 45 unit and integration tests with 56% code coverage
-- **CI/CD Ready**: GitHub Actions workflow for automated testing and deployment
+- **🔑 Key Pair Management**: Automated EC2 key pair creation and secure storage
+- **🛡️ Security Groups**: Dynamic security group configuration with IP-based rules
+- **💻 EC2 Instances**: Automated instance provisioning with custom user data
+- **⚖️ Application Load Balancer**: Full ALB setup with target groups and listeners
+- **🌐 Web Server Deployment**: Automatic website deployment from tooplate.com templates
+- **🧹 Resource Cleanup**: Comprehensive cleanup script for safe resource removal
+- **📊 Modular Architecture**: Clean, maintainable code structure following best practices
+- **🧪 Comprehensive Testing**: 45 unit and integration tests with 56% code coverage
+- **🔄 CI/CD Ready**: GitHub Actions workflow for automated testing and deployment
 
-## Architecture
+## 🏗️ Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -48,7 +43,7 @@ A production-ready, modular Python automation framework for deploying complete A
             └──────────────────────┘
 ```
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 aws-infrastructure-automation/
@@ -85,7 +80,7 @@ aws-infrastructure-automation/
 └── quick-test.sh         # Quick test execution
 ```
 
-## Quick Start
+## 🚀 Quick Start
 
 ### Prerequisites
 
@@ -179,14 +174,14 @@ The script will:
 
 ```
 ==========================================
-ACCESS YOUR WEBSITE:
+🌐 ACCESS YOUR WEBSITE:
 ==========================================
 
-   ALB Endpoint: http://barista-cafe-alb-123456789.us-east-1.elb.amazonaws.com
-   Direct Access: http://54.123.45.67
-   Instance Info: http://barista-cafe-alb-123456789.us-east-1.elb.amazonaws.com/instance-info.html
+   🔗 ALB Endpoint: http://barista-cafe-alb-123456789.us-east-1.elb.amazonaws.com
+   🔗 Direct Access: http://54.123.45.67
+   📊 Instance Info: http://barista-cafe-alb-123456789.us-east-1.elb.amazonaws.com/instance-info.html
 
-Note: Allow 2-3 minutes for the website to be fully configured.
+⏰ Note: Allow 2-3 minutes for the website to be fully configured.
 ==========================================
 ```
 
@@ -212,7 +207,7 @@ python cleanup.py --force
 - **Resource Tagging**: All resources tagged for tracking and cost management
 - **Automated Cleanup**: Prevents resource waste and unauthorized access
 
-## Testing
+## 🧪 Testing
 
 ### Test Suite
 
@@ -297,7 +292,7 @@ The project includes error handling for:
 - Multi-AZ subnet selection
 - Listener and health check setup
 
-## Customization
+## 🎨 Customization
 
 ### Change Website Template
 
@@ -320,7 +315,7 @@ INSTANCE_TYPE = "t2.small"  # Or any other EC2 instance type
 AWS_REGION = "eu-west-1"
 ```
 
-## Best Practices Demonstrated
+## 📝 Best Practices Demonstrated
 
 1. **Modular Design**: Separation of concerns across modules
 2. **Configuration Management**: Centralized configuration
@@ -333,7 +328,7 @@ AWS_REGION = "eu-west-1"
 9. **Test Coverage**: Unit and integration tests with mocking
 10. **CI/CD Pipeline**: Automated testing and quality checks
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
@@ -344,17 +339,17 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 3. **Update docs**: Add documentation for new features
 4. **Follow style**: Use existing code style and conventions
 
-## License
+## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Acknowledgments
+## 🙏 Acknowledgments
 
 - Website templates from [Tooplate.com](https://www.tooplate.com/)
 - AWS Boto3 Documentation
 - Python community
 
-## Use Cases
+## 💡 Use Cases
 
 - **Learning AWS**: Perfect for understanding AWS services programmatically
 - **DevOps Practice**: Infrastructure automation patterns and testing
@@ -362,7 +357,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Portfolio Project**: Demonstrate AWS, Python, and testing skills
 - **Interview Prep**: Shows professional coding practices
 
-## Troubleshooting
+## 🔍 Troubleshooting
 
 ### Common Issues
 
@@ -423,7 +418,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Run from project root directory
 - Check Python version (3.8+ required)
 
-## Cost Estimation
+## 💰 Cost Estimation
 
 With t2.micro (Free Tier eligible):
 
@@ -433,4 +428,4 @@ With t2.micro (Free Tier eligible):
 
 ---
 
-**If you find this project helpful, please consider giving it a star!**
+**⭐ If you find this project helpful, please consider giving it a star!**
